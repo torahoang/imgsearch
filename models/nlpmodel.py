@@ -34,4 +34,4 @@ def img_to_text_nlp(img_path):
         return preds
 
 
-    return print(predict_step([img_path]))
+    return predict_step([img_path])

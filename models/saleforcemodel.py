@@ -14,4 +14,4 @@ def img_to_text_saleforce(raw_image_path):
     # vis_processors stores image transforms for "train" and "eval" (validation / testing / inference)
     image = vis_processors["eval"](raw_image).unsqueeze(0).to(device)
     # generate caption
-    return print(model.generate({"image": image}))
+    return model.generate({"image": image})
