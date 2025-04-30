@@ -13,6 +13,7 @@ sentence_model = SentenceTransformer('sentence-transformers/all-MiniLM-L6-v2', m
 sentence_model.bfloat16()  # convert all model weight to 16bit
 backend_dir = os.path.dirname(os.path.abspath(__file__))
 app_data_path = os.path.join(backend_dir, 'AppData')
+model_path = os.path.join(backend_dir, 'moondream-2b-int8.mf')
 
 
 # Create persistent client
@@ -33,7 +34,7 @@ collection = client.get_or_create_collection(
 def encoding_img(folder):
     files = os.listdir(folder)
     image = []  # store
-    model = md.vl(model="moondream-2b-int8.mf")
+    model = md.vl(model=model_path)
 
     for file in files:
         if (file.endswith(".png") or file.endswith(".jpg")):
@@ -42,9 +43,9 @@ def encoding_img(folder):
         full_path = os.path.join(folder, img)
         img_encoder(full_path, model)
 
-    del model  # Delete the Moondream model object
-    model = None  # Set to None to indicate it's unloaded
-    torch.cuda.empty_cache()  # Clear GPU cache
+    # del model  # Delete the Moondream model object
+    # model = None  # Set to None to indicate it's unloaded
+    # torch.cuda.empty_cache()  # Clear GPU cache
     return jsonify("done")
 
 
