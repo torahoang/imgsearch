@@ -69,4 +69,4 @@ npm run dev
 - Select folder with images to index
 - Wait for indexing to complete
 - Search using natural language
-- Click results to view images
+- Press enter then VOILÀ
