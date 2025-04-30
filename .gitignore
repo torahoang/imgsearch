@@ -14,6 +14,10 @@ build/
 .env.test.local
 .env.production.local
 
+AppData/
+venv
+chroma.sqlite3
+moondream-2b-int8.mf
 # Logs
 npm-debug.log*
 yarn-debug.log*

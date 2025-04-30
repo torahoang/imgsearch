@@ -2,6 +2,9 @@
 import {Input} from "@heroui/input";
 import { useNavigate } from "react-router-dom";
 import React from 'react';
+import {Dropdown, DropdownTrigger, DropdownMenu, DropdownItem} from "@heroui/dropdown";
+import {Button} from "@heroui/button";
+
 
 export const SearchIcon = (props) => {
   return (
@@ -33,26 +36,92 @@ export const SearchIcon = (props) => {
   );
 };
 
+
+
 export default function SearchBar() {
   const navigate = useNavigate();
   const [searchQuery, setSearchQuery] = React.useState("");
+  const [isLoading, setIsLoading] = React.useState(false);
 
-  const handleNavigate = () => {
-    if (searchQuery.trim()) {
-      navigate('/landing', { state: { searchQuery } });
+  const handleSearch = async () => {
+    if (!searchQuery.trim()) {
+      console.log('Empty search query');
+      return;
+    }
+
+    setIsLoading(true);
+    const apiUrl = `http://127.0.0.1:5000/querying/${encodeURIComponent(searchQuery)}`;
+    console.log('Sending request to:', apiUrl);
+
+    try {
+      const response = await fetch(apiUrl, {
+        method: 'GET',
+        headers: {
+          'Accept': 'application/json',
+        }
+      });
+
+      console.log('Response status:', response.status);
+      console.log('Response headers:', response.headers);
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      const results = await response.json();
+      console.log('Search results:', results);
+
+      if (!Array.isArray(results)) {
+        console.error('Received non-array response:', results);
+        throw new Error('Expected array of results');
+      }
+
+      const normalizedResults = results.map(path => path.replace(/\\/g, '/'));
+      console.log('Normalized results:', normalizedResults);
+
+      // Use replace to avoid navigation stack issues
+      navigate('/landing', {
+        state: {
+          searchQuery,
+          searchResults: normalizedResults
+        },
+        replace: true
+      });
+
+    } catch (error) {
+      console.error('Search failed:', error);
+      console.error('Error details:', {
+        message: error.message,
+        stack: error.stack
+      });
+      alert(`Search failed: Please check the console for details`);
+    } finally {
+      setIsLoading(false);
     }
   };
 
+
+
   return (
-    <div className="flex flex-col gap-4 w-full max-w-2xl mx-auto">
+    <div className="flex flex-row gap-4 w-full max-w-2xl mx-auto">
       <div className="w-full rounded-2xl flex justify-center items-center bg-gradient-to-tr from-pink-500 to-yellow-500 text-white p-1">
-        <Input
+      <Input
+          endContent={<button
+            onClick={handleSearch}
+            disabled={isLoading}
+            className={`p-2 text-gray-400 hover:text-white transition-colors duration-200 ${
+              isLoading ? 'opacity-50 cursor-not-allowed' : ''
+            }`}
+          >
+            {isLoading ? '⌛' : '➡️'}
+          </button>}
           isClearable
+          disabled={isLoading}
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
           onKeyPress={(e) => {
             if (e.key === 'Enter') {
-              handleNavigate();
+              handleSearch();
             }
           }}
           classNames={{
@@ -87,18 +156,15 @@ export default function SearchBar() {
       </div>
 
       <div className="flex items-center gap-2 justify-center">
-        <button className="px-3 py-1 rounded-full bg-teal-500/20 text-teal-500 text-sm hover:bg-teal-500/30">
-          Pro
-        </button>
-        <button className="px-3 py-1 rounded-full bg-gray-700/50 text-gray-300 text-sm hover:bg-gray-700/70">
-          Sonar
-        </button>
-        <button
-          onClick={handleNavigate}
-          className="p-2 text-gray-400 hover:text-white transition-colors duration-200"
-        >
-          ➡️
-        </button>
+        <Dropdown>
+      <DropdownTrigger>
+        <Button className="text-white" variant="bordered">Models</Button>
+      </DropdownTrigger>
+      <DropdownMenu aria-label="Static Actions">
+        <DropdownItem key="Pro">Pro</DropdownItem>
+        <DropdownItem key="Sonar">Sonar</DropdownItem>
+      </DropdownMenu>
+    </Dropdown>
       </div>
     </div>
   );

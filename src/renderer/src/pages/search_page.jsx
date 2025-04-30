@@ -1,6 +1,6 @@
 import React from 'react';
 import SearchBar from '../components/SearchBar';
-
+import FolderInput from '../components/FolderInput';
 
 const SearchPage = () => {
   return (
@@ -10,7 +10,10 @@ const SearchPage = () => {
           What image do you want to find?
         </h1>
         <div className="w-full bg-gray-800 rounded-lg p-4">
-          <SearchBar />
+          <div className="flex items-center gap-4 mb-4">
+            <SearchBar />
+            <FolderInput />
+          </div>
         </div>
       </div>
     </div>

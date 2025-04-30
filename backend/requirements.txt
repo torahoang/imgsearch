@@ -1,0 +1,8 @@
+flask
+flask-cors
+torch
+Pillow
+sentence-transformers
+numpy
+chromadb
+moondream

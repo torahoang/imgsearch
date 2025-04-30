@@ -1,4 +1,5 @@
-import { app, shell, BrowserWindow, ipcMain } from 'electron'
+/* eslint-disable prettier/prettier */
+import { app, shell, BrowserWindow, ipcMain, contextBridge, ipcRenderer, dialog } from 'electron'
 import { join } from 'path'
 import { electronApp, optimizer, is } from '@electron-toolkit/utils'
 import icon from '../../resources/icon.png?asset'
@@ -13,7 +14,9 @@ function createWindow() {
     ...(process.platform === 'linux' ? { icon } : {}),
     webPreferences: {
       preload: join(__dirname, '../preload/index.js'),
-      sandbox: false
+      sandbox: false,
+      webSecurity: false, // Disable web security
+      allowRunningInsecureContent: true // Allow loading local resources
     }
   })
 
@@ -49,9 +52,25 @@ app.whenReady().then(() => {
     optimizer.watchWindowShortcuts(window)
   })
 
-  // IPC test
-  ipcMain.on('ping', () => console.log('pong'))
+  ipcMain.handle('open-file', async (_, filePath) => {
+      // Ensure proper Windows path format with drive letter
+      const cleanPath = filePath
+        .replace(/\//g, '\\') // Convert forward slashes to backslashes
+        .replace(/^\\/, '') // Remove leading backslash if present
+        .replace(/^([A-Z])\\/, '$1:\\'); // Add colon after drive letter
 
+      console.log('Opening file:', cleanPath);
+      await shell.openPath(cleanPath);
+      return true;
+  });
+
+  ipcMain.handle('open-folder-dialog', async () => {
+    const result = await dialog.showOpenDialog({
+      properties: ['openDirectory']
+    });
+    console.log('Selected folder:', result);
+    return result;
+  });
   createWindow()
 
   app.on('activate', function () {
@@ -60,6 +79,24 @@ app.whenReady().then(() => {
     if (BrowserWindow.getAllWindows().length === 0) createWindow()
   })
 })
+
+if (process.contextIsolated) {
+  try {
+    contextBridge.exposeInMainWorld('electron', {
+      ipcRenderer: {
+        invoke: (channel, ...args) => {
+          const validChannels = ['open-file'];
+          if (validChannels.includes(channel)) {
+            return ipcRenderer.invoke(channel, ...args);
+          }
+          throw new Error(`Invalid channel: ${channel}`);
+        }
+      }
+    })
+  } catch (error) {
+    console.error(error)
+  }
+}
 
 // Quit when all windows are closed, except on macOS. There, it's common
 // for applications and their menu bar to stay active until the user quits

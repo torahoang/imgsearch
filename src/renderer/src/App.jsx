@@ -1,5 +1,4 @@
 /* eslint-disable prettier/prettier */
-import SearchBar from './components/SearchBar'
 import './index.css';
 import SideBar from './components/SideBar';
 import { BrowserRouter, Routes, Route } from 'react-router-dom';

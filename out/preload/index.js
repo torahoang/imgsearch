@@ -13,3 +13,14 @@ if (process.contextIsolated) {
   window.electron = preload.electronAPI;
   window.api = api;
 }
+electron.contextBridge.exposeInMainWorld("electron", {
+  ipcRenderer: {
+    invoke: (channel, ...args) => {
+      const validChannels = ["open-folder-dialog", "open-file"];
+      if (validChannels.includes(channel)) {
+        return electron.ipcRenderer.invoke(channel, ...args);
+      }
+      return Promise.reject(new Error("Invalid channel"));
+    }
+  }
+});
