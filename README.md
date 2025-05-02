@@ -11,6 +11,7 @@ https://github.com/user-attachments/assets/7061f431-9a6c-40d5-a12d-2a6164f86e77
 
 
 ## ✨ How It Works
+![Front End](https://github.com/user-attachments/assets/2164e959-545f-4f94-b29e-bbe426062b84)
 
 - Uses AI to understand and index your local images
 - Converts images into searchable vector embeddings
