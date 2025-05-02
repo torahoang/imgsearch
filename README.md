@@ -64,9 +64,13 @@ npm run dev
 ### Model Setup
 - [Moondream 2B](https://huggingface.co/vikhyatk/moondream2/resolve/9dddae84d54db4ac56fe37817aeaeb502ed083e2/moondream-2b-int8.mf.gz?download=true)
 - [Moondream 0.5B](https://huggingface.co/vikhyatk/moondream2/resolve/9dddae84d54db4ac56fe37817aeaeb502ed083e2/moondream-0_5b-int8.mf.gz?download=true)
+
 ## 💡 Usage
 - Launch the application
-- Select folder with images to index
+- Select folder with images to encode
 - Wait for indexing to complete
 - Search using natural language
 - Press enter then VOILÀ
+### Note
+Encoding image takes a while(20-30s/image currently). 
+If you just want to quickly test the app out, in backend folder, there is a test folder with a few image already encoded. Feel free to pick a few and test out the app capabilities.
