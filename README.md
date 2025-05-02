@@ -2,7 +2,11 @@
 
 A desktop application that allows searching through local images using natural language queries, powered by AI.
 
-https://github.com/user-attachments/assets/0caf2010-e269-485a-bf0c-27ec073c8a5c
+
+
+https://github.com/user-attachments/assets/7061f431-9a6c-40d5-a12d-2a6164f86e77
+
+
 
 
 
