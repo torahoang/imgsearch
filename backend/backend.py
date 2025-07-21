@@ -65,7 +65,7 @@ def img_encoder(img_path, model, img_id=None):
         metadatas=[{"file_path": img_path}]  # Add metadata with file path
         #metadata={"hnsw:space": "cosine", "hnsw:search_ef": 100} to expand neighborsearch
     )
-
+#fef
 
 def paragraph_to_avg_embedding(paragraph: str):
     """
