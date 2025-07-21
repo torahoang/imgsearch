@@ -2,11 +2,16 @@
 
 A desktop application that allows searching through local images using natural language queries, powered by AI.
 
-https://github.com/user-attachments/assets/0caf2010-e269-485a-bf0c-27ec073c8a5c
+
+
+https://github.com/user-attachments/assets/7061f431-9a6c-40d5-a12d-2a6164f86e77
+
+
 
 
 
 ## ✨ How It Works
+![Front End](https://github.com/user-attachments/assets/2164e959-545f-4f94-b29e-bbe426062b84)
 
 - Uses AI to understand and index your local images
 - Converts images into searchable vector embeddings
@@ -64,9 +69,13 @@ npm run dev
 ### Model Setup
 - [Moondream 2B](https://huggingface.co/vikhyatk/moondream2/resolve/9dddae84d54db4ac56fe37817aeaeb502ed083e2/moondream-2b-int8.mf.gz?download=true)
 - [Moondream 0.5B](https://huggingface.co/vikhyatk/moondream2/resolve/9dddae84d54db4ac56fe37817aeaeb502ed083e2/moondream-0_5b-int8.mf.gz?download=true)
+
 ## 💡 Usage
 - Launch the application
-- Select folder with images to index
+- Select folder with images to encode
 - Wait for indexing to complete
 - Search using natural language
 - Press enter then VOILÀ
+### Note
+Encoding image takes a while(20-30s/image currently). 
+If you just want to quickly test the app out, in backend folder, there is a test folder with a few image already encoded. Feel free to pick a few and test out the app capabilities.
